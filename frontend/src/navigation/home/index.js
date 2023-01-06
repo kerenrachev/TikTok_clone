@@ -19,7 +19,8 @@ export default function HomeScreen() {
     return (
         <Tab.Navigator
             barStyle={{ backgroundColor: 'black' }}
-            initialRouteName="feed">
+            initialRouteName="feed"
+            >
             <Tab.Screen
                 name="feed"
                 component={FeedNavigation}

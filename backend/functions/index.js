@@ -4,12 +4,20 @@ const functions = require("firebase-functions");
 const admin = require('firebase-admin')
 admin.initializeApp()
 
-const db = admin.firestore() 
-exports.newUser = functions.auth.user().onCreate((user)=>{
+const db = admin.firestore()
+exports.newUser = functions.auth.user().onCreate((user) => {
 
     return db.collection("user")
         .doc(user.uid)
-        .create(JSON.parse(JSON.stringify(user)))
+        .create({
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            followingCount: 0,
+            followersCount: 0,
+            likesCount: 0
+        })
 })
 
 
@@ -47,4 +55,40 @@ exports.likeDelete = functions.firestore.document('post/{id}/{type}/{uid}').onDe
         .collection("post")
         .doc(context.params.id)
         .update(updateObj)
+})
+
+
+exports.followCreated = functions.firestore.document('user/{id}/following/{uid}').onCreate((_, context) => {
+
+    return db
+        .collection("user")
+        .doc(context.params.id)
+        .update({
+            followingCount: admin.firestore.FieldValue.increment(1)
+        })
+        .then(() => {
+            db
+                .collection("user")
+                .doc(context.params.uid)
+                .update({
+                    followersCount: admin.firestore.FieldValue.increment(1)
+                })
+        })
+})
+
+exports.followDeleted = functions.firestore.document('user/{id}/following/{uid}').onDelete((_, context) => {
+
+    return db
+        .collection("user")
+        .doc(context.params.id)
+        .update({
+            followingCount: admin.firestore.FieldValue.increment(-1)
+        }).then(() => {
+            db
+                .collection("user")
+                .doc(context.params.uid)
+                .update({
+                    followersCount: admin.firestore.FieldValue.increment(-1)
+                })
+        })
 })

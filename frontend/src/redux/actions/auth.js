@@ -44,6 +44,19 @@ export const login = (email, password) => dispatch => new Promise((resolve, reje
         })
 })
 
+export const signout = () => dispatch => new Promise((Resolve, reject) =>{
+    console.log("SIGNED OUT1")
+    firebase.auth().signOut().then(() => {
+        console.log("SIGNED OUT2")
+        return dispatch({
+            type: USER_STATE_CHANGE,
+            currentUser: null,
+            loaded: true
+        })
+    });
+    
+})
+
 export const register = (email, password) => dispatch => new Promise((resolve, reject) => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(() => {

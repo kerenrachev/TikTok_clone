@@ -3,6 +3,7 @@ import { Dimensions, FlatList, View } from 'react-native'
 import PostSingle from '../../components/general/post'
 import { getFeed, getPostsByUserId } from '../../services/posts'
 import styles from './styles'
+import useMaterialNavBarHeight from '../../hooks/useMaterialNavBarHeight'
 
 /**
  * Component that renders a list of posts meant to be 
@@ -51,6 +52,8 @@ export default function FeedScreen({route}) {
         });
     })
 
+    const feedItemHeight = Dimensions.get('window').height - useMaterialNavBarHeight(profile)
+
     /**
      * renders the item shown in the FlatList
      * 
@@ -59,8 +62,11 @@ export default function FeedScreen({route}) {
      * @returns 
      */
     const renderItem = ({ item, index }) => {
+
+        const backgroundColor = 'black'
+
         return (
-            <View style={[{ flex: 1, height: Dimensions.get('window').height - 88 }, index % 2 == 0 ? { backgroundColor: 'blue' } : { backgroundColor: 'pink' }]}>
+            <View style={[{ flex: 1, height: feedItemHeight , backgroundColor: backgroundColor }]}>
                 <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)} />
             </View>
         )

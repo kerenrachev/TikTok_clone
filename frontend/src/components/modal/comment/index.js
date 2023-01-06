@@ -25,6 +25,8 @@ export default function CommentModal({ post }) {
         return () => clearCommentListener()
     }, [])
 
+    
+
     const renderItem = ({ item }) => {
         return (<CommentItem item={item} />)
     }
