@@ -12,20 +12,39 @@ exports.newUser = functions.auth.user().onCreate((user)=>{
         .create(JSON.parse(JSON.stringify(user)))
 })
 
-exports.likeCreate = functions.firestore.document('post/{id}/likes/{uid}').onCreate((_, context)=>{
 
-    return db.collection("post")
-        .doc(context.params.id)
-        .update({
+exports.likeCreate = functions.firestore.document('post/{id}/{type}/{uid}').onCreate((_, context) => {
+    let updateObj = {}
+    if (context.params.type == 'comments') {
+        updateObj = {
+            commentsCount: admin.firestore.FieldValue.increment(1)
+        }
+    }
+    if (context.params.type == 'likes') {
+        updateObj = {
             likesCount: admin.firestore.FieldValue.increment(1)
-        })
+        }
+    }
+    return db
+        .collection("post")
+        .doc(context.params.id)
+        .update(updateObj)
 })
 
-exports.likeDelete = functions.firestore.document('post/{id}/likes/{uid}').onDelete((_, context)=>{
-
-    return db.collection("post")
-        .doc(context.params.id)
-        .update({
+exports.likeDelete = functions.firestore.document('post/{id}/{type}/{uid}').onDelete((_, context) => {
+    let updateObj = {}
+    if (context.params.type == 'comments') {
+        updateObj = {
+            commentsCount: admin.firestore.FieldValue.increment(-1)
+        }
+    }
+    if (context.params.type == 'likes') {
+        updateObj = {
             likesCount: admin.firestore.FieldValue.increment(-1)
-        })
+        }
+    }
+    return db
+        .collection("post")
+        .doc(context.params.id)
+        .update(updateObj)
 })

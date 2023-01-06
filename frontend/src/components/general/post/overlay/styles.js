@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
         width: 50,
         borderRadius: 25,
         borderWidth: 2,
+        marginBottom: 16,
         borderColor: 'white'
     },
     leftContainer:{
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     },
     actionButton:{
         padding: 10,
-        marginTop: 16
+        paddingBottom: 16
     },
     actionButtonText:{
         color: 'white',

@@ -11,6 +11,7 @@ import EditProfileScreen from '../../screens/profile/edit';
 import EditProfileFieldScreen from '../../screens/profile/edit/field';
 import ProfileScreen from '../../screens/profile';
 import FeedScreen from '../../screens/feed';
+import Modal from '../../components/modal';
 
 const Stack = createStackNavigator()
 
@@ -45,6 +46,8 @@ export default function Route() {
                     </>
                 }
             </Stack.Navigator>
+
+            <Modal/>
         </NavigationContainer>
     )
 }
